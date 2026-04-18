@@ -1,0 +1,42 @@
+name: Validate Agent Memory Learn
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "docs/**"
+      - "sites/agent-memory-learn/**"
+      - ".github/workflows/agent-memory-learn-pages.yml"
+      - ".github/workflows/agent-memory-learn-validate.yml"
+  push:
+    branches-ignore:
+      - "main"
+    paths:
+      - "docs/**"
+      - "sites/agent-memory-learn/**"
+      - ".github/workflows/agent-memory-learn-pages.yml"
+      - ".github/workflows/agent-memory-learn-validate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-memory-learn-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Build Site
+        working-directory: sites/agent-memory-learn
+        run: node scripts/build.mjs
