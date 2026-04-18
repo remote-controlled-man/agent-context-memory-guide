@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Build Site
         working-directory: sites/agent-memory-learn
         run: node scripts/build.mjs
